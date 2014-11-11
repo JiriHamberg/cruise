@@ -1,0 +1,16 @@
+<h1> Hytit </h1>
+
+<ul>
+{% for cabin in cabins %}
+	<li> {{ cabin }}	
+	<ul>
+	{% for person in cabin.person_set.all %}
+		<li>
+		{{ person.public_name }}
+		</li>
+	{% endfor %}
+	</ul>
+	</li>
+{% endfor %}
+
+</ul>

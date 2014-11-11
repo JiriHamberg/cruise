@@ -1,0 +1,33 @@
+{% extends "cruise/base.html" %}
+{% load staticfiles %}
+
+{% block head %} 
+	<script src="{% static "cruise/js/jquery-ui-1.11.2/jquery-ui.min.js" %}"></script>
+{% endblock %}
+
+{% block body %}
+
+	<h1>Ilmoittautumiseni</h1>
+	
+	{% if messages %}
+	<ul class="messages">
+	    {% for message in messages %}
+	    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+	    {% endfor %}
+	</ul>
+	{% endif %}
+
+	<table>
+		<tr>
+			<td style="width: 50%" >
+				 <form action="" method="post">{% csrf_token %}
+				    {{ form.as_p }}
+				    <input type="submit" value="Update" />
+				</form>
+			</td>
+			<td style="width: 50%" class="cabin_selector_container">
+				{% include "cruise/partials/cabin_selector.html"%}
+			</td>
+		</tr>
+	</table>
+{% endblock %}

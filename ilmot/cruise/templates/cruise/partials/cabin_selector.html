@@ -1,0 +1,100 @@
+<select id="student_group_select"></select>
+<div class="scrollable_container">
+	<ul class="cabin_list">
+	{% for cabin in cabins %}
+		<li id="{{ cabin.id }}" class="cabin_option cabin_elem"> 
+		{{ cabin }}
+		<ul class="person_list">
+		{% for person in cabin.person_set.all %}
+			<li data-personid="{{person.id}}"  title="" class="person_elem">
+				{{ person }}
+			</li>
+		{% endfor %}
+		</ul>
+		</li>
+	{% endfor %}
+	</ul>
+</div>
+
+<script>
+	$("#id_date_of_birth").datepicker({ dateFormat: 'dd/mm/yy'})
+	$(document).tooltip()
+	$("#id_cabin").parent().attr('hidden', true)
+	//$("form").on('submit', function(){
+	//	$("#id_cabin").attr('disabled', false)
+	//})
+</script>
+
+<script>
+	/*
+	 *	Adds a filtering mechanism to #student_group_select select element.
+	 *	Fetches cabin student groups from /cruise/json/cabin_category
+	 *	and attaches filtering functionality based on the groups to the select element's
+	 *	on change event handler.
+	 */
+	$.ajax({
+		url: '/cruise/json/cabin_category'
+	}).done(function(student_groups){
+		for(var key in student_groups) {
+			$("#student_group_select").append(new Option(key))
+		}
+		$("#student_group_select").change(function(){
+			var selected_group = $(this).children().filter(":selected").text()
+			$(".selected_cabin").addClass("cabin_option")
+			$(".cabin_option").removeClass("selected_cabin")
+			$("select#id_cabin").children().filter(function(){
+				return $(this).val() === "" 
+			}).prop('selected', true)
+			$(".cabin_option:hidden").toggle()
+			$(".cabin_option").filter(function(){
+				return !_.contains(student_groups[selected_group], parseInt(this.id)) 
+			}).toggle()
+
+		})
+	})
+
+	/*
+	 * Selects the initial cabin (for update view)
+	 */
+	 $(document).ready(function(){
+	 	$(".cabin_option").filter(function(){
+	 		return this.id === $("select#id_cabin").children().filter(":selected").val()
+	 	}).trigger("click")
+	 })
+</script>
+
+<script>
+	/* 
+	 *	Control cabin options of the form by clicking on .cabin_option elements.
+	 *  The selected option has "selected_cabin" class but not "cabin_option" class.
+	 *	Other options have "cabin_option" class but not "selected_cabin" class.
+	 */
+	$(".cabin_option").click(function(){
+		$(".selected_cabin").addClass("cabin_option")
+		$(".cabin_option").removeClass("selected_cabin")
+		$(this).addClass("selected_cabin")
+		$(this).removeClass("cabin_option")
+		var clicked_id = this.id
+		$("select#id_cabin").children().filter(function(){			
+			return $(this).val() === clicked_id
+		}).prop('selected', true)
+	})
+</script>
+
+<script>
+/*
+ *	Decorates person entries with pop-up info
+ */
+ function decorate(elem, info) {
+ 	var title = info.public_name +", Student group: " + info.group
+ 	$(elem).prop("title", title)
+ }
+
+ $.ajax({
+		url: '/cruise/json/person_info'
+	}).done(function(persons){
+		$("[data-personid]").each(function(index){
+			decorate(this, persons[parseInt($(this).data("personid"))])
+		})
+	})
+</script>

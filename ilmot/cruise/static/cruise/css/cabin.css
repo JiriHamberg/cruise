@@ -1,0 +1,52 @@
+.cabin_option:hover {
+	background-color: #d0e4fe !important;
+	cursor: pointer;
+}
+
+.selected_cabin {
+	background-color: #66FF00 !important;
+}
+
+ul.cabin_list {
+	list-style-type:none;
+	padding-left: 0px;
+}
+
+ul.person_list {
+	list-style-type:none;
+	padding: 10px;
+}
+
+li.cabin_elem {
+	border-color: #FFFFFF;
+	margin-left: 10px;
+	margin-bottom: 4px;
+	border-collapse: collapse;
+	display: inline-block;
+	min-height: 50px;
+	width: 95%;
+	border: 1px solid;
+    /*border-radius: 5px;*/
+}
+
+li.person_elem {
+	/*margin: 4px;*/
+	margin-bottom: 4px;
+	margin-right: 4px;
+	float: left;
+	text-align: center;
+	width: 35%;
+	border: 2px solid;
+    border-radius: 5px;
+}
+
+div.scrollable_container {
+	border: 1px solid;
+	max-width: 75%;
+	overflow-y: scroll;
+	height: 90%; 
+}
+
+.cabin_selector_container {
+	vertical-align: top;
+}

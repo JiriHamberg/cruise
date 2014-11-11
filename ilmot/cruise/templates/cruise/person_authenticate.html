@@ -1,0 +1,24 @@
+{% extends "cruise/base.html" %}
+
+{% block head %} {% endblock %}
+
+{% block body %}
+	{% if messages %}
+	<ul class="messages">
+	    {% for message in messages %}
+	    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+	    {% endfor %}
+	</ul>
+	{% endif %}
+
+	 <form action="" method="post">{% csrf_token %}
+	    {{ mail_form.as_p }}
+	    <input type="submit" value="Send Access Key" />
+	</form>
+
+
+	 <form action="" method="post">{% csrf_token %}
+	    {{ key_form.as_p }}
+	    <input type="submit" value="Update My Registration" />
+	</form>
+{% endblock %}
